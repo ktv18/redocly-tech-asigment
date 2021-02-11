@@ -2,10 +2,11 @@ const fs = require('fs');
 const packageJSONConfig = require('./package.json');
 
 const updateConfig = ({ name, version }) => {
+  const { name: oldName, version: oldVersion, ...rest } = packageJSONConfig;
   const newPackageConfig = {
-    ...packageJSONConfig,
     name,
-    version: version,
+    version,
+    ...rest,
   };
 
   try {
@@ -26,7 +27,7 @@ const getGitScript = (version) =>
     version
   )} && git add package.json && git commit -m 'Update package with version ${version}' && git push origin ${getNewGitBranch(
     version
-  )}`;
+  )} && git checkout main`;
 
 const cliPromptQuestions = [
   {
